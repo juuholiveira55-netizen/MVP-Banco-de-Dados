@@ -7,12 +7,12 @@
 
 ## Sumário
 
-1. [Contexto de Negócio e Perguntas (Etapa 2 e 4.1)](#1-contexto-de-negócio-e-perguntas-etapa-2-e-41)
-2. [Carga dos Dados (Etapa 4.2)](#2-carga-dos-dados-etapa-42)
-3. [Modelagem e Catálogo de Dados (Etapa 4.3)](#3-modelagem-e-catálogo-de-dados-etapa-43)
-4. [Pipeline de Dados (Etapa 4.4)](#4-pipeline-de-dados-etapa-44)
-5. [Qualidade de Dados (Etapa 4.5)](#5-qualidade-de-dados-etapa-45)
-6. [Análise de Dados (Etapa 4.5)](#6-análise-de-dados-etapa-45)
+1. [Contexto de Negócio e Perguntas ](#1-contexto-de-negócio-e-perguntas-etapa-2-e-41)
+2. [Carga dos Dados ](#2-carga-dos-dados-etapa-42)
+3. [Modelagem e Catálogo de Dados ](#3-modelagem-e-catálogo-de-dados-etapa-43)
+4. [Pipeline de Dados ](#4-pipeline-de-dados-etapa-44)
+5. [Qualidade de Dados ](#5-qualidade-de-dados-etapa-45)
+6. [Análise de Dados ](#6-análise-de-dados-etapa-45)
 7. [Autoavaliação](#7-autoavaliação)
 8. [Como reproduzir](#8-como-reproduzir)
 
@@ -247,7 +247,7 @@ Uma linha por parada de box. Na versão do Kaggle, os registros começam na temp
 
 #### `gold.dim_corrida`
 
-Uma linha por Grande Prêmio do calendário. Também cumpre o papel de dimensão de tempo (ano, década, era regulamentar).
+Uma linha por Grande Prêmio do calendário. Também cumpre o papel de dimensão de tempo.
 
 **Chave primária:** `corrida_id` · **Chaves estrangeiras:** `circuito_id` → `gold.dim_circuito`
 
@@ -517,7 +517,7 @@ O pipeline foi **ramificado em um notebook por etapa**, seguindo a Arquitetura M
 
 ## 5. Qualidade de Dados (Etapa 4.5)
 
-A qualidade foi verificada **antes** da transformação (diagnóstico da Bronze, notebook 02) e **depois** dela (validações da Silver e da Gold, notebooks 03 e 04). Os resultados ficam gravados em tabelas do schema `qualidade`, o que permite acompanhar a qualidade a cada nova carga.
+A qualidade foi verificada antes da transformação (diagnóstico da Bronze, notebook 02) e depois dela (validações da Silver e da Gold, notebooks 03 e 04). Os resultados ficam gravados em tabelas do schema `qualidade`, o que permite acompanhar a qualidade a cada nova carga.
 
 **Completude.** O perfil de todas as colunas das 14 tabelas (`qualidade.perfil_bronze`) mostrou que os nulos se concentram onde são esperados por natureza histórica, e não por erro: horários de treinos só existem desde 2021 (92–99% nulos), o código de três letras e o número permanente dos pilotos só existem para pilotos recentes (88% e 93% nulos), a volta mais rápida só é registrada desde 2004 (69% nulos) e o tempo total só existe para quem terminou na volta do líder (71% nulos). A `position` nula (41%) corresponde aos pilotos não classificados. Nenhuma chave ou coluna essencial tem nulos.
 
@@ -615,11 +615,11 @@ Circuitos de 2014–2024 com pelo menos 5 corridas, dos que mais aos que menos t
 
 ![P3](docs/img/13_p3_confiabilidade.png)
 
-**Resposta:** sim, e de forma dramática. Até os anos 1990, **metade do grid não terminava a corrida** e cerca de 1 em cada 3 largadas acabava em quebra. A virada acontece nos anos 2000 e se consolida nos 2010, com limites de motores e câmbios por temporada que obrigaram as equipes a projetar para durar. Nos anos 2020, 86% dos pilotos terminam e a falha mecânica caiu para 6,3%, **abaixo dos acidentes pela primeira vez na história**. Isso conecta P3 a P1 e P2: com menos quebras, quem larga na frente raramente é tirado da disputa por azar, e a ordem do grid se preserva. A década de 1980, com a menor taxa de conclusão (44%), é justamente a de menor peso da pole em P1.
+**Resposta:** sim, e de forma dramática. Até os anos 1990, metade do grid não terminava a corrida e cerca de 1 em cada 3 largadas acabava em quebra. A virada acontece nos anos 2000 e se consolida nos 2010, com limites de motores e câmbios por temporada que obrigaram as equipes a projetar para durar. Nos anos 2020, 86% dos pilotos terminam e a falha mecânica caiu para 6,3%, abaixo dos acidentes pela primeira vez na história. Isso conecta P3 a P1 e P2: com menos quebras, quem larga na frente raramente é tirado da disputa por azar, e a ordem do grid se preserva. A década de 1980, com a menor taxa de conclusão (44%), é justamente a de menor peso da pole em P1.
 
 ### P4 · Os pit stops ficaram mais rápidos?
 
-Anos selecionados (a série completa está no notebook):
+Anos selecionados:
 
 | Ano | Paradas | Mediana no pit lane (s) | 10% mais rápidas (s) |
 |---|---|---|---|
@@ -644,7 +644,7 @@ Equipes de 2022–2024 (com ao menos 50 paradas), pelo tempo relativo à mediana
 
 ![P4](docs/img/14_p4_pit_stops.png)
 
-**Resposta (parcial):** pelo que os dados medem, **não**. A mediana ficou praticamente estável, em torno de 22–24 s, e até subiu um pouco a partir de 2014. A explicação está na própria métrica: a fonte registra o **tempo total no pit lane**, e não o tempo com o carro parado. A troca de pneus em si caiu para cerca de 2 segundos nesse período, mas esse ganho de 1–2 s fica escondido dentro de um tempo dominado pelo limite de velocidade e pelo comprimento da via dos boxes, que variam por circuito e por regulamento. A comparação entre equipes, usando o tempo relativo à mediana de cada corrida para neutralizar o efeito do circuito, é mais reveladora: a **Red Bull** foi a mais rápida de 2022 a 2024 (1,8% abaixo da mediana, cerca de 0,4 s por parada), enquanto a **Haas** foi a mais lenta (2,3% acima). O ranking é coerente com o que se sabe do esporte, mas a diferença entre a melhor e a pior equipe é de cerca de 1 s por parada.
+**Resposta (parcial):** pelo que os dados medem, não. A mediana ficou praticamente estável, em torno de 22–24 s, e até subiu um pouco a partir de 2014. A explicação está na própria métrica: a fonte registra o tempo total no pit lane, e não o tempo com o carro parado. A troca de pneus em si caiu para cerca de 2 segundos nesse período, mas esse ganho de 1–2 s fica escondido dentro de um tempo dominado pelo limite de velocidade e pelo comprimento da via dos boxes, que variam por circuito e por regulamento. A comparação entre equipes, usando o tempo relativo à mediana de cada corrida para neutralizar o efeito do circuito, é mais reveladora: a **Red Bull** foi a mais rápida de 2022 a 2024 (1,8% abaixo da mediana, cerca de 0,4 s por parada), enquanto a **Haas** foi a mais lenta (2,3% acima). O ranking é coerente com o que se sabe do esporte, mas a diferença entre a melhor e a pior equipe é de cerca de 1 s por parada.
 
 ### P5 · A F1 ficou mais ou menos previsível?
 
@@ -663,7 +663,7 @@ Temporadas mais dominadas: Alfa Romeo 1950 e Ferrari 1952 (100%), **Red Bull 202
 
 ![P5](docs/img/15_p5_dominancia.png)
 
-**Resposta:** ficou **mais previsível**. Os anos 1970 foram a década mais equilibrada (a equipe dominante vencia 42% das corridas e quase 7 pilotos diferentes venciam por temporada). Desde então, a concentração cresce de forma quase contínua, e nos anos 2020 a melhor equipe vence dois terços das corridas. A série anual mostra ciclos: cada grande mudança de regulamento abre uma janela de dominância (Mercedes 2014–2016, Red Bull 2022–2023), que depois se fecha à medida que as outras equipes alcançam, como em 2024 (37,5%). Somando P1, P2, P3 e P5, a resposta ao problema central fica clara: **na F1 moderna, o resultado é decidido principalmente pelo carro**, que define a classificação, que define a largada, que quase sempre define a chegada, porque os carros praticamente não quebram mais.
+**Resposta:** ficou mais previsível. Os anos 1970 foram a década mais equilibrada (a equipe dominante vencia 42% das corridas e quase 7 pilotos diferentes venciam por temporada). Desde então, a concentração cresce de forma quase contínua, e nos anos 2020 a melhor equipe vence dois terços das corridas. A série anual mostra ciclos: cada grande mudança de regulamento abre uma janela de dominância (Mercedes 2014–2016, Red Bull 2022–2023), que depois se fecha à medida que as outras equipes alcançam, como em 2024 (37,5%). Somando P1, P2, P3 e P5, a resposta ao problema central fica clara: na F1 moderna, o resultado é decidido principalmente pelo carro, que define a classificação, que define a largada, que quase sempre define a chegada, porque os carros praticamente não quebram mais.
 
 ### P6 · Existe fator casa?
 
@@ -678,7 +678,7 @@ Comparação pareada (cada piloto contra ele mesmo), 1980–2024, 97 pilotos com
 
 ![P6](docs/img/16_p6_fator_casa.png)
 
-**Resposta:** **não há evidência de fator casa** no conjunto dos pilotos. A diferença média é pequena (+0,28 ponto por corrida), apenas metade dos pilotos rende mais em casa (49,5%, praticamente cara ou coroa) e a estatística t de 1,16 está bem abaixo do nível usual de significância (cerca de 2). Há, no entanto, casos individuais marcantes: Nigel Mansell (+6,96 pontos por corrida no GP da Inglaterra, em Silverstone e Brands Hatch), Alain Prost (+6,47) e Lewis Hamilton (+4,27) renderam muito mais em casa. Do lado oposto aparecem dois brasileiros: Ayrton Senna (−4,44) e Rubens Barrichello (−3,66) foram, em média, piores no GP do Brasil (Jacarepaguá e Interlagos), o que é coerente com a fama de quebras e azares dos brasileiros no GP do Brasil, enquanto Felipe Massa (+2,74) foi a exceção. Com amostras de 10 a 20 corridas em casa por piloto, esses casos podem ser acaso, e não é possível afirmar causalidade.
+**Resposta:** não há evidência de fator casa no conjunto dos pilotos. A diferença média é pequena (+0,28 ponto por corrida), apenas metade dos pilotos rende mais em casa (49,5%, praticamente cara ou coroa) e a estatística t de 1,16 está bem abaixo do nível usual de significância (cerca de 2). Há, no entanto, casos individuais marcantes: Nigel Mansell (+6,96 pontos por corrida no GP da Inglaterra, em Silverstone e Brands Hatch), Alain Prost (+6,47) e Lewis Hamilton (+4,27) renderam muito mais em casa. Do lado oposto aparecem dois brasileiros: Ayrton Senna (−4,44) e Rubens Barrichello (−3,66) foram, em média, piores no GP do Brasil (Jacarepaguá e Interlagos), o que é coerente com a fama de quebras e azares dos brasileiros no GP do Brasil, enquanto Felipe Massa (+2,74) foi a exceção. Com amostras de 10 a 20 corridas em casa por piloto, esses casos podem ser acaso, e não é possível afirmar causalidade.
 
 ### Discussão geral
 
@@ -688,32 +688,18 @@ As seis respostas se encaixam em uma narrativa única. Nos primeiros 40 anos da 
 
 ## 7. Autoavaliação
 
-**Objetivos atingidos.** O pipeline completo foi construído e funciona de ponta a ponta na nuvem: ingestão de 14 arquivos, diagnóstico de qualidade, limpeza, modelo estrela, catálogo no Unity Catalog e análises. Das seis perguntas, **quatro foram respondidas por completo** (P1, P2, P3 e P5) e **duas parcialmente**:
+**Objetivos atingidos.** O pipeline completo foi construído e funciona de ponta a ponta na nuvem: ingestão de 14 arquivos, diagnóstico de qualidade, limpeza, modelo estrela, catálogo no Unity Catalog e análises. Das seis perguntas, quatro foram respondidas por completo (P1, P2, P3 e P5) e duas parcialmente:
 
-- **P4 (pit stops):** a pergunta original era se as paradas ficaram mais rápidas. O dado disponível mede o tempo total no pit lane, e não o tempo parado, então não foi possível medir a evolução da troca de pneus em si. A comparação relativa entre equipes contornou parte do problema. Esse limite só ficou claro durante a análise, o que reforça a lição de verificar o **significado** de cada campo, e não só o formato.
+- **P4 (pit stops):** a pergunta original era se as paradas ficaram mais rápidas. O dado disponível mede o tempo total no pit lane, e não o tempo parado, então não foi possível medir a evolução da troca de pneus em si. A comparação relativa entre equipes contornou parte do problema. Esse limite só ficou claro durante a análise, o que reforça a lição de verificar o significado de cada campo, e não só o formato.
 - **P6 (fator casa):** foi respondida no agregado (não há efeito), mas não foi possível isolar a causa dos casos individuais. Além disso, "casa" foi definido pela nacionalidade do piloto, sem considerar pilotos que moram em outro país ou GPs "caseiros" das equipes.
 
 **Dificuldades.** As principais foram entender o domínio: descobrir que um piloto podia ter dois resultados na mesma corrida (carros compartilhados) mudou o grão do modelo, e perceber que `grid = 0` não é uma posição e que a Indianápolis 500 contava para o Mundial evitou conclusões erradas em P1 e P2. Tecnicamente, o modo ANSI do Spark rejeita conversões de valores como `\N`, o que exigiu o uso de `try_cast`; e manter o catálogo sincronizado com as tabelas levou à decisão de definir a documentação em um só arquivo e validá-la automaticamente.
 
 **Limitações conhecidas.** O status `Retired` (sem causa informada) aparece sobretudo a partir dos anos 2010 (cerca de 1% das largadas) e pode subestimar levemente a taxa de falha mecânica recente. A categorização de status foi feita por regra manual, e alguns casos são ambíguos (um furo pode ser falha ou incidente). O `pontos_sistema_atual` não inclui pontos de sprint nem de volta mais rápida.
 
-**Trabalhos futuros.**
-
-1. **Ingestão incremental via API**: substituir o upload manual pela [API Jolpica](https://github.com/jolpica/jolpica-f1) (sucessora da Ergast), com carga incremental a cada GP, `MERGE` na Silver e um Job agendado no Databricks.
-2. **Tempo parado nos pit stops**: integrar dados de telemetria (por exemplo, a biblioteca FastF1) para responder P4 por completo.
-3. **Novos fatos**: `fato_volta` (lap_times) e `fato_classificacao` (qualifying) para analisar ritmo de corrida e diferença entre classificação e corrida.
-4. **Modelo preditivo**: usar a Gold como base de features para prever pódio a partir de grid, equipe e circuito.
-5. **Dashboard**: publicar as análises em um AI/BI Dashboard do Databricks.
 
 ---
 
-## 8. Como reproduzir
-
-1. Crie uma conta no [Databricks Free Edition](https://www.databricks.com/learn/free-edition).
-2. Importe a pasta `notebooks/` para o workspace (ou conecte este repositório como Git folder).
-3. Rode `notebooks/00_setup` para criar catálogo, schemas e volume.
-4. Envie os 14 arquivos de `archive/` para `/Volumes/f1_mvp/bronze/arquivos_brutos/f1/`. Pela CLI oficial: `databricks fs cp -r archive dbfs:/Volumes/f1_mvp/bronze/arquivos_brutos/f1 --overwrite`.
-5. Crie um Job serverless com sete tarefas, uma por notebook de `00_setup` a `06_analise`, com dependência da anterior, e execute. O notebook `99_executar_pipeline` também permite execução interativa em sequência.
 
 ### Execução verificada no Databricks
 
