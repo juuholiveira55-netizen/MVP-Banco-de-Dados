@@ -1,0 +1,11 @@
+.venv/
+.revisao_backup/
+tmp/
+__pycache__/
+*.py[cod]
+.DS_Store
+spark-warehouse/
+metastore_db/
+derby.log
+.env
+
