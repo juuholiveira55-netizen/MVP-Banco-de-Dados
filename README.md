@@ -14,7 +14,6 @@
 5. [Qualidade de Dados ](#5-qualidade-de-dados-etapa-45)
 6. [Análise de Dados ](#6-análise-de-dados-etapa-45)
 7. [Autoavaliação](#7-autoavaliação)
-8. [Como reproduzir](#8-como-reproduzir)
 
 ### Arquitetura em uma imagem
 
